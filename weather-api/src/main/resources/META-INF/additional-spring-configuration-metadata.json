@@ -1,0 +1,99 @@
+{
+	"properties": [
+		{
+			"name": "api.version",
+			"type": "java.lang.String",
+			"description": "A description for 'api.version'"
+		},
+		{
+			"name": "api.name",
+			"type": "java.lang.String",
+			"description": "A description for 'api.name'"
+		},
+		{
+			"name": "api.dependency.name",
+			"type": "java.lang.String",
+			"description": "A description for 'api.dependency.name'"
+		},
+		{
+			"name": "api.dependency.operation",
+			"type": "java.lang.String",
+			"description": "A description for 'api.dependency.operation'"
+		},
+		{
+			"name": "open-weather.apikey",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.apikey'"
+		},
+		{
+			"name": "open-weather.host",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.host'"
+		},
+		{
+			"name": "open-weather.data",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.data'"
+		},
+		{
+			"name": "open-weather.version",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.version'"
+		},
+		{
+			"name": "open-weather.lat",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.lat'"
+		},
+		{
+			"name": "open-weather.lon",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.lon'"
+		},
+		{
+			"name": "open-weather.unit",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.unit'"
+		},
+		{
+			"name": "open-weather.lang",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.lang'"
+		},
+		{
+			"name": "open-weather.key",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.key'"
+		},
+		{
+			"name": "open-weather.operationId",
+			"type": "java.lang.String",
+			"description": "A description for 'open-weather.operationId'"
+		},
+		{
+			"name": "geo-location.limit",
+			"type": "java.lang.String",
+			"description": "A description for 'geo-location.limit'"
+		},
+		{
+			"name": "geo-location.city-name",
+			"type": "java.lang.String",
+			"description": "A description for 'geo-location.city-name'"
+		},
+		{
+			"name": "geo-location.direct",
+			"type": "java.lang.String",
+			"description": "A description for 'geo-location.direct'"
+		},
+		{
+			"name": "geo-location.version",
+			"type": "java.lang.String",
+			"description": "A description for 'geo-location.version'"
+		},
+		{
+			"name": "geo-location.operationId",
+			"type": "java.lang.String",
+			"description": "A description for 'geo-location.operationId'"
+		}
+	]
+}

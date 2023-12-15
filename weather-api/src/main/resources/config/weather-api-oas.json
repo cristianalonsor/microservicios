@@ -1,0 +1,746 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "weather-api-oas",
+		"description": "The weather API allows user to retreive weather info via geolocation or coordinates",
+		"version": "1.0",
+		"contact": {
+			"name": "Roberto Seittiffe",
+			"email": "theuscience@gmail.com",
+			"url": "https://theuscience.com"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000"
+		}
+	],
+	"paths": {
+		"/version": {
+			"get": {
+				"operationId": "getVersion",
+				"description": "Check the version the weather API",
+				"responses": {
+					"200": {
+						"description": "API version consultation was sucessful",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/versionResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/health-check": {
+			"get": {
+				"operationId": "getHealthCheck",
+				"description": "Check the health status of the weather API",
+				"responses": {
+					"200": {
+						"description": "Health check consultation was successful",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/healthCheckResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/searchWeatherByCoordinates": {
+			"get": {
+				"operationId": "searchByCoordinates",
+				"description": "Search weather information using longitude and latitude values",
+				"parameters": [
+					{
+						"name": "latitude",
+						"description": "The navigational coordinate recorded as an angular distance (degrees) north or south of the earth equator",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "longitude",
+						"description": "The navigational coordinate measured as a meridian that passes through each of the earth poles",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "metric",
+						"description": "Unit measure system",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "200 - Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/weatherResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "400 - Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/status"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "500 - Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/status"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/searchWeatherByGeolocation": {
+			"get": {
+				"operationId": "searchByGeolocation",
+				"description": "Search weather information using country.city name and limit of results",
+				"parameters": [
+					{
+						"name": "city",
+						"description": "City name to search weather information, may contain country code to narrow down results using the pattern <CityName>,<CountryCode> -> Santiago,cl",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"description": "Limit the possible results",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "200 - Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/weatherResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "400 - Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/status"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "500 - Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/status"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"healthCheckResponse": {
+				"title": "Health Check Root Schema",
+				"type": "object",
+				"required": [
+					"name",
+					"version",
+					"provider"
+				],
+				"properties": {
+					"name": {
+						"title": "API name",
+						"type": "string",
+						"example": "Weather API"
+					},
+					"version": {
+						"title": "API version",
+						"type": "string",
+						"example": "0.0.1"
+					},
+					"provider": {
+						"title": "API Provider",
+						"type": "object",
+						"required": [
+							"name",
+							"health"
+						],
+						"properties": {
+							"name": {
+								"title": "Provider Name",
+								"type": "string",
+								"example": "Main Provider"
+							},
+							"health": {
+								"title": "API Health Status",
+								"type": "object",
+								"required": [
+									"dependencies"
+								],
+								"properties": {
+									"dependencies": {
+										"title": "API Dependencies",
+										"type": "array",
+										"items": {
+											"title": "Dependency",
+											"type": "object",
+											"required": [
+												"dependency",
+												"status"
+											],
+											"properties": {
+												"dependency": {
+													"title": "Dependency name",
+													"type": "string",
+													"example": "Weather API"
+												},
+												"status": {
+													"title": "Dependency status",
+													"enum": [
+														"UP",
+														"DOWN",
+														"ERROR"
+													],
+													"type": "string",
+													"example": "UP"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"versionResponse": {
+				"title": "Version Root Schema",
+				"type": "object",
+				"required": [
+					"name",
+					"version"
+				],
+				"properties": {
+					"name": {
+						"title": "API name",
+						"type": "string",
+						"example": "Weather API"
+					},
+					"version": {
+						"title": "API version",
+						"type": "string",
+						"example": "0.0.1"
+					}
+				}
+			},
+			"status": {
+				"title": "Request result status",
+				"description": "API status. Define the errir reporting structure that may be returned by an API call",
+				"type": "object",
+				"additionalProperties": true,
+				"required": [
+					"serverStatusCode",
+					"severity"
+				],
+				"properties": {
+					"serverStatusCode": {
+						"description": "HTTP server status code. The value placed here os used to allow client to display a status code to the user.",
+						"type": "string"
+					},
+					"severity": {
+						"description": "API status severity code. Valid values: Error & Warning. Use these to tag the issue accordingly",
+						"enum": [
+							"Warning",
+							"Error"
+						],
+						"type": "string"
+					},
+					"additionalStatus": {
+						"description": "API Additional statuses. This aggregate may appear for each additional status that the server intends to provide",
+						"type": "array",
+						"items": {
+							"description": "Possible additional statuses",
+							"type": "object",
+							"additionalProperties": true,
+							"required": [
+								"statusCode",
+								"severity"
+							],
+							"properties": {
+								"statusCode": {
+									"description": "Response status code",
+									"type": "integer"
+								},
+								"serverStatusCode": {
+									"description": "Server status code",
+									"type": "string",
+									"maxLength": 100
+								},
+								"severity": {
+									"description": "API status severity code",
+									"enum": [
+										"Info",
+										"Warning",
+										"Error"
+									],
+									"type": "string"
+								},
+								"statusDescription": {
+									"description": "Status description. Explanatory text associated with a status",
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			},
+			"weatherResponse": {
+				"title": "Weather Response Object",
+				"description": "Response object returned by weather api",
+				"type": "object",
+				"properties": {
+					"coord": {
+						"title": "Coordinates",
+						"description": "Coordinates of the queried location",
+						"type": "object",
+						"properties": {
+							"lon": {
+								"description": "Longitude of the queried location",
+								"type": "number",
+								"example": 44.44
+							},
+							"lat": {
+								"description": "Latitude of the queried location",
+								"type": "number",
+								"example": 33.33
+							}
+						}
+					},
+					"weather": {
+						"title": "Weather",
+						"description": "Weather information",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer",
+									"example": 802
+								},
+								"main": {
+									"type": "string",
+									"example": "Clouds"
+								},
+								"description": {
+									"type": "string",
+									"example": "Scattered clouds"
+								},
+								"icon": {
+									"type": "string",
+									"example": "03n"
+								}
+							}
+						}
+					},
+					"base": {
+						"type": "string",
+						"example": "stations"
+					},
+					"main": {
+						"title": "Detailed information",
+						"description": "Detailed weather description of the location",
+						"type": "object",
+						"properties": {
+							"temp": {
+								"type": "number",
+								"example": 28.7
+							},
+							"feels_like": {
+								"type": "number",
+								"example": 26.72
+							},
+							"temp_min": {
+								"type": "number",
+								"example": 28
+							},
+							"temp_max": {
+								"type": "number",
+								"example": 28
+							},
+							"pressure": {
+								"type": "number",
+								"example": 1000
+							},
+							"humidity": {
+								"type": "number",
+								"example": 19
+							},
+							"sea_level": {
+								"type": "number",
+								"example": 1000
+							},
+							"grnd_level": {
+								"type": "number",
+								"example": 1004
+							}
+						}
+					},
+					"visibility": {
+						"type": "number",
+						"example": 10000
+					},
+					"wind": {
+						"title": "Wind",
+						"description": "Wind information",
+						"type": "object",
+						"properties": {
+							"speed": {
+								"type": "number",
+								"example": 5.03
+							},
+							"deg": {
+								"type": "number",
+								"example": 137
+							},
+							"gust": {
+								"type": "number",
+								"example": 8.95
+							}
+						}
+					},
+					"clouds": {
+						"title": "Clouds",
+						"description": "Cloud information",
+						"type": "object",
+						"properties": {
+							"all": {
+								"type": "number",
+								"example": 27
+							}
+						}
+					},
+					"dt": {
+						"type": "number",
+						"example": 1680714106
+					},
+					"sys": {
+						"title": "System",
+						"description": "System general information",
+						"type": "object",
+						"properties": {
+							"type": {
+								"type": "number",
+								"example": 1
+							},
+							"id": {
+								"type": "number",
+								"example": 7597
+							},
+							"country": {
+								"type": "string",
+								"example": "IQ"
+							},
+							"sunrise": {
+								"type": "number",
+								"example": 1680662717
+							},
+							"sunset": {
+								"type": "number",
+								"example": 1680662717
+							}
+						}
+					},
+					"timezone": {
+						"type": "number",
+						"example": 10000
+					},
+					"id": {
+						"type": "number",
+						"example": 98182
+					},
+					"name": {
+						"type": "string",
+						"example": "Baghdad"
+					},
+					"cod": {
+						"type": "number",
+						"example": 200
+					}
+				}
+			},
+			"geoLocationInformation": {
+				"title": "Geolocation Search Result",
+				"description": "Geolocation information of the City",
+				"type": "object",
+				"properties": {
+					"geolocationArray": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"example": "Santiago"
+								},
+								"local_names": {
+									"type": "object",
+									"properties": {
+										"el": {
+											"type": "string",
+											"example": "Σαντιάγο"
+										},
+										"hi": {
+											"type": "string",
+											"example": "सेण्टियागो"
+										},
+										"is": {
+											"type": "string",
+											"example": "Santíagó"
+										},
+										"hu": {
+											"type": "string",
+											"example": "Santiago de Chile"
+										},
+										"mr": {
+											"type": "string",
+											"example": "सान्तियागो, चिली"
+										},
+										"uz": {
+											"type": "string",
+											"example": "Santiyago"
+										},
+										"th": {
+											"type": "string",
+											"example": "ซานเตียโก"
+										},
+										"bg": {
+											"type": "string",
+											"example": "Сантяго"
+										},
+										"bo": {
+											"type": "string",
+											"example": "སཱན་ཏི་ཡ་གོ"
+										},
+										"os": {
+											"type": "string",
+											"example": "Сантьяго"
+										},
+										"ar": {
+											"type": "string",
+											"example": "سانتياغو"
+										},
+										"lt": {
+											"type": "string",
+											"example": "Santjagas"
+										},
+										"kn": {
+											"type": "string",
+											"example": "ಸ್ಯಾಂಟಿಯಾಗೊ"
+										},
+										"bn": {
+											"type": "string",
+											"example": "সান্তিয়াগো, চিলি"
+										},
+										"my": {
+											"type": "string",
+											"example": "ဆန်တီယာဂိုမြို့"
+										},
+										"ru": {
+											"type": "string",
+											"example": "Сантьяго"
+										},
+										"ht": {
+											"type": "string",
+											"example": "Santyago"
+										},
+										"zh": {
+											"type": "string",
+											"example": "聖地亞哥/圣地亚哥"
+										},
+										"fr": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"es": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"la": {
+											"type": "string",
+											"example": "Sanctiacobi"
+										},
+										"oc": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"en": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"mn": {
+											"type": "string",
+											"example": "Сантъяго"
+										},
+										"sv": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"be": {
+											"type": "string",
+											"example": "Сант'яга"
+										},
+										"sr": {
+											"type": "string",
+											"example": "Сантијаго де Чиле"
+										},
+										"az": {
+											"type": "string",
+											"example": "Santyaqo"
+										},
+										"fa": {
+											"type": "string",
+											"example": "سانتیاگو"
+										},
+										"uk": {
+											"type": "string",
+											"example": "Сантьяго"
+										},
+										"he": {
+											"type": "string",
+											"example": "סנטיאגו דה צ'ילה"
+										},
+										"ug": {
+											"type": "string",
+											"example": "Santiyago"
+										},
+										"ab": {
+											"type": "string",
+											"example": "Сантиаго"
+										},
+										"lv": {
+											"type": "string",
+											"example": "Santjago"
+										},
+										"ta": {
+											"type": "string",
+											"example": "சான் டியேகோ"
+										},
+										"wa": {
+											"type": "string",
+											"example": "Santiago do Tchili"
+										},
+										"ko": {
+											"type": "string",
+											"example": "산티아고"
+										},
+										"mk": {
+											"type": "string",
+											"example": "Сантјаго"
+										},
+										"ur": {
+											"type": "string",
+											"example": "سینٹیاگو"
+										},
+										"yi": {
+											"type": "string",
+											"example": "סאנטיאגא"
+										},
+										"ml": {
+											"type": "string",
+											"example": "സാന്റിയാഗൊ"
+										},
+										"pl": {
+											"type": "string",
+											"example": "Santiago"
+										},
+										"ja": {
+											"type": "string",
+											"example": "サンティアゴ"
+										},
+										"hy": {
+											"type": "string",
+											"example": "Սանտյագո"
+										},
+										"am": {
+											"type": "string",
+											"example": "ሳንቲያጎ"
+										},
+										"ka": {
+											"type": "string",
+											"example": "სანტიაგო"
+										},
+										"da": {
+											"type": "string",
+											"example": "Santiago de Chile"
+										}
+									}
+								},
+								"lat": {
+									"type": "number",
+									"example": 33.33
+								},
+								"lon": {
+									"type": "number",
+									"example": 44.44
+								},
+								"country": {
+									"type": "string",
+									"example": "CL"
+								},
+								"state": {
+									"type": "string",
+									"example": "Santiago"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
