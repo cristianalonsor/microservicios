@@ -1,0 +1,52 @@
+<ng-container *ngIf="data$ | async as data">
+  <div class="profile-page" *ngIf="data">
+
+    <div class="user-info">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-10 offser-md-1">
+            <img [src]="data.data.image" class="user-img">
+            <h4>{{ data.data.username}}</h4>
+            <p>{{ data.data.bio }}</p>
+            <div>
+              FOLLOW USER BUTTON
+              <a *ngIf="data.isCurrentUserProfile" class="btn btn-sm btn-outline-secondary action-btn"
+                routerLink="/settings">
+                Editar Perfil
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-10 offset-md-1">
+
+          <div class="articles-toggler">
+            <ul class="nav nav-pills outline-active">
+              <li class="nav-item">
+                <a [routerLink]="['/profiles', data.data.username]" class="nav-link" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{exact: true}">
+                  Mis Post
+                </a>
+              </li>
+              <li class="nav-item">
+                <a [routerLink]="['/profiles', data.data.username, 'favorites']" class="nav-link"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                  Posts Favoritos
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <app-feed [apiUrl]="getApiUrl()"></app-feed>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ng-container>

@@ -1,0 +1,49 @@
+<div class="editor">
+    <div class="container page">
+       <div class="row">
+           <div class="col-md-10 offset-md-1 col-xs-12">
+               <app-errorMessage *ngIf="errors" [message]="errors"></app-errorMessage>
+
+               <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                
+                <fieldset class="form-group">
+                    <input type="text" 
+                        class="form-control form-control-lg" 
+                        placeholder="Titulo"
+                        formControlName="title">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <input type="text" 
+                        class="form-control form-control-lg" 
+                        placeholder="Descripción"
+                        formControlName="description">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <textarea class="form-control form-control-lg"
+                        rows="8"
+                        placeholder="Cuerpo"
+                        formControlName="body">
+                    </textarea>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <input type="text" 
+                        class="form-control form-control-lg" 
+                        placeholder="Tag List"
+                        formControlName="tagList">
+                </fieldset>
+                <fieldset>
+                    <button type="submit"
+                            class="btn btn-lg pull-xs-right btn-primary"
+                            [disabled]="form.invalid || isSubmitting">
+                            Publicar Artículo
+                    </button>
+                </fieldset>
+
+               </form>
+           </div>
+       </div>
+    </div>
+</div>

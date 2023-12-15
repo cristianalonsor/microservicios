@@ -1,0 +1,8 @@
+<ul class="todo-list">
+  <!-- enviamos por referencia el todo al hijo desde el padre,
+     para trabajarlo en ese componente -->
+     <!-- al pipe le paso como parametro el filtro actual para ejecutar
+   las operaciones necesarias en el pipe -->
+  <app-todo-item *ngFor="let todo of todos | filtroTodo:filtroActual"
+                 [todo]="todo"></app-todo-item>
+</ul>
