@@ -1,0 +1,30 @@
+docker container run `
+-dp 3306:3306 ` ->deatached and ports que se usan para enlazar la maquina
+--name world-db ` ->alias para el container
+-e MARIADB_USER=example-user ` ->variables de entorno
+-e MARIADB_PASSWORD=user-password `
+-e MARIADB_ROOT_PASSWORD=root-secret-password `
+-e MARIADB_DATABASE=world-db `
+--volume world-db:/var/lib/mysql ` ->hacemos referencia al volumen que tiene persistiendo la data
+--network world-app ` ->relaciona el contenedor con una network que exista
+mariadb:jammy `
+
+
+docker container run `
+--name phpmyadmin `
+-d `
+-e PMA_ARBITRARY=1 `
+-p 8080:80 `
+--network world-app `
+phpmyadmin:5.2.0-apache
+
+docker container run `
+--name nest-app `
+-w /app `
+-p 3000:3000 `
+-v ${pwd}:/app `
+node:16-alpine3.16 `
+sh -c "yarn install && yarn start:dev"
+
+-v "$(pwd)":/app->conecto donde sea que me encuentre y lo enlazo a una carpeta dentro del contenedor
+-w /app ->especifico el working directory de la app
